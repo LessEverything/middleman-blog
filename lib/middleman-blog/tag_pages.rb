@@ -25,9 +25,13 @@ module Middleman
         resources + @app.blog.tags.map do |tag, articles|
           path = TagPages.link(@app, tag)
           
+          posible_file_name = tag.downcase.split(/\s/).join('_')
+          sf = Dir.glob("#{@app.root_path}/source/blog/tags/#{posible_file_name}.*").first || nil
+
           p = ::Middleman::Sitemap::Resource.new(
             @app.sitemap,
-            path
+            path,
+            sf 
           )
           p.proxy_to(@app.blog.options.tag_template)
 
